@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Data
 public class OpenHoursUpdate {
+    private String day;
+    private OpenHours openHours;
 }
