@@ -154,8 +154,6 @@ public class DefaultThcService implements ThcService{
     @Test
     @Transactional
     public int deleteLocation(String location_name){
-//        int deletedRecords = thcLocationRepository.deleteLocation(location_name);
-//        if(deletedRecords > 0) return 1;
         int deletedRecords = thcLocationRepository.deleteLocation(location_name);
         if(deletedRecords > 0) {
             return 1;
