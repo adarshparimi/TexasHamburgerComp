@@ -42,6 +42,16 @@ public class ThcController {
         return false;
     }
 
+    @PostMapping("/updateMenuItem")
+    public boolean updateMenuItem(@RequestBody ThcMenuItemUpdate menuItemUpdate){
+        String item_name = menuItemUpdate.getItemName();
+        ThcMenuItem update_menu_item = menuItemUpdate.getThcMenuItem();
+        int updatedRecords = thcService.updateMenuItem(item_name, update_menu_item);
+        if(updatedRecords > 0)
+            return true;
+        return false;
+    }
+
     @PostMapping("/addReservations")
     @ApiOperation(value = "This operation add new reservations")
     public boolean addReservations(@RequestBody ThcReservation thcReservation){
@@ -59,6 +69,16 @@ public class ThcController {
     public boolean deleteReservations(@RequestBody int reserve_id){
         int deletedRecords = thcService.deleteReservation(reserve_id);
         if(deletedRecords == 1)
+            return true;
+        return false;
+    }
+
+    @PostMapping("/updateReservation")
+    public boolean updateReservation(@RequestBody ThcReservationUpdate thcReservationUpdate){
+        int reserve_id = thcReservationUpdate.getReserveId();
+        ThcReservation update_reserve = thcReservationUpdate.getThcReservation();
+        int updatedRecords = thcService.updateReservation(reserve_id, update_reserve);
+        if(updatedRecords > 0)
             return true;
         return false;
     }
@@ -87,9 +107,9 @@ public class ThcController {
 
     @PostMapping("/updateOpenHours")
     public boolean updateOpenHours(@RequestBody OpenHoursUpdate openHoursUpdate){
-        String day = openHoursUpdate;
-        ThcLocation update_location = thcLocationUpdate.getLocation();
-        int updatedRecords = thcService.updateLocations(location_name, update_location);
+        String day = openHoursUpdate.getDay();
+        OpenHours open_hours = openHoursUpdate.getOpenHours();
+        int updatedRecords = thcService.updateOpenHours(day, open_hours);
         if(updatedRecords > 0)
             return true;
         return false;

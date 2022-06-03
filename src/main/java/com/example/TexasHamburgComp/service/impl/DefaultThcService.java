@@ -39,17 +39,33 @@ public class DefaultThcService implements ThcService{
 
     @Override
     public List<ThcMenuItem> getMenu() {
-        List<ThcMenuItem> menuList = (List<ThcMenuItem>)thcMenuRepository.findAll();
-        return menuList;
+        return (List<ThcMenuItem>)thcMenuRepository.findAll();
     }
 
     @Override
     @Test
     @Transactional
     public int deleteMenuItem(String name){
-        int deletedRecords = thcMenuRepository.deleteItemName(name);
-        return deletedRecords;
+        return thcMenuRepository.deleteItemName(name);
     }
+
+    @Override
+    @Transactional
+    public int updateMenuItem(String item_name,ThcMenuItem update_menu_item){
+        List<ThcMenuItem> thcMenuItemList = thcMenuRepository.selectLocation(item_name);
+        System.out.println("sl = "+ thcMenuItemList);
+
+        String update_id = thcMenuItemList.get(0).getItemId();
+        System.out.println("update_id"+ update_id);
+        update_menu_item.setItemId(update_id);
+        System.out.println("to be updated - "+ update_menu_item);
+
+        ThcMenuItem updated = thcMenuRepository.save(update_menu_item);
+        if(updated != null)
+            return 1;
+        return 0;
+    }
+
 
     @Override
     public boolean addReservation(ThcReservation thcReservation) {
@@ -60,8 +76,7 @@ public class DefaultThcService implements ThcService{
 
     @Override
     public List<ThcReservation> getAllReservations() {
-        List<ThcReservation> reserveList = (List<ThcReservation>)thcReserveRepository.findAll();
-        return reserveList;
+        return (List<ThcReservation>)thcReserveRepository.findAll();
     }
 
     @Override
@@ -74,6 +89,24 @@ public class DefaultThcService implements ThcService{
     }
 
     @Override
+    @Transactional
+    public int updateReservation(int reserve_id,ThcReservation update_reserve){
+        List<ThcReservation> reservation = thcReserveRepository.selectReservation(reserve_id);
+        System.out.println("sl = "+ reservation);
+
+        int update_id = reservation.get(0).getReserveId();
+        System.out.println("update_id"+ update_id);
+        update_reserve.setReserveId(update_id);
+        System.out.println("to be updated - "+ update_reserve);
+
+        ThcReservation updated = thcReserveRepository.save(update_reserve);
+        if(updated != null)
+            return 1;
+        return 0;
+    }
+
+
+    @Override
     public boolean addOpenHours(OpenHours OpenHours){
         thcOpenHoursRepository.save(OpenHours);
         System.out.println(OpenHours);
@@ -81,8 +114,7 @@ public class DefaultThcService implements ThcService{
     }
     @Override
     public List<OpenHours> getOpenHours(){
-        List<OpenHours> openHoursList = (List<OpenHours>) thcOpenHoursRepository.findAll();
-        return openHoursList;
+        return (List<OpenHours>) thcOpenHoursRepository.findAll();
     }
 
     @Override
@@ -93,6 +125,19 @@ public class DefaultThcService implements ThcService{
         if(deletedRecords > 0) return 1;
         return 0;
     }
+
+
+    @Override
+    @Transactional
+    public int updateOpenHours(String day, OpenHours openHours){
+        List<OpenHours> openHoursList = thcOpenHoursRepository.selectOpenHours(day);
+        System.out.println("sl = "+ openHoursList);
+
+        thcOpenHoursRepository.save(openHours);
+        return 1;
+
+    }
+
     @Override
     public boolean addLocation(ThcLocation location){
         thcLocationRepository.save(location);
@@ -102,8 +147,7 @@ public class DefaultThcService implements ThcService{
 
     @Override
     public List<ThcLocation> getLocation(){
-        List<ThcLocation> locationList = (List<ThcLocation>) thcLocationRepository.findAll();
-        return locationList;
+        return (List<ThcLocation>) thcLocationRepository.findAll();
     }
 
     @Override
@@ -113,7 +157,9 @@ public class DefaultThcService implements ThcService{
 //        int deletedRecords = thcLocationRepository.deleteLocation(location_name);
 //        if(deletedRecords > 0) return 1;
         int deletedRecords = thcLocationRepository.deleteLocation(location_name);
-        System.out.println(deletedRecords);
+        if(deletedRecords > 0) {
+            return 1;
+        }
         return 0;
     }
 
@@ -131,24 +177,7 @@ public class DefaultThcService implements ThcService{
         thcLocationRepository.save(update_location);
         System.out.println("l - "+location);
         return 1;
-//        if(location != null)
-//        return 0;
-    }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-//
-//        com.example.TexasHamburgComp.model.User user = userRepository.findUserByUsername(userName);
-//
-//        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-//
-////        user.getAuthorities()
-////                .forEach(role -> {
-////                    grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()
-////                            .getName()));
-////                });
-//
-//        return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
-//    }
+    }
 
 }
