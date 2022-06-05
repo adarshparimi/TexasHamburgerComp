@@ -5,6 +5,7 @@ import com.example.TexasHamburgComp.model.ThcLocation;
 import com.example.TexasHamburgComp.model.ThcMenuItem;
 import com.example.TexasHamburgComp.model.ThcReservation;
 import org.aspectj.apache.bcel.classfile.Module;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.xml.stream.Location;
@@ -31,5 +32,7 @@ public interface ThcService {
     List<ThcLocation> getLocation();
     int deleteLocation(String location_name);
     int updateLocations(String location_name, ThcLocation update_location);
+    Page<ThcLocation> findLocationsPaginatedAndSorted(String page, String size, String sortBy, String sortOrder, String fields);
+    void batchUpsert(List<ThcLocation> thcLocationList);
 
 }

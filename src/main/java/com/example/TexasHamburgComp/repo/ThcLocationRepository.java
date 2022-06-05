@@ -1,6 +1,7 @@
 package com.example.TexasHamburgComp.repo;
 
 import com.example.TexasHamburgComp.model.ThcLocation;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

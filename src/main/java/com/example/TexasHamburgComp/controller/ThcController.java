@@ -4,10 +4,9 @@ package com.example.TexasHamburgComp.controller;
 import com.example.TexasHamburgComp.model.*;
 import com.example.TexasHamburgComp.service.ThcService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -144,6 +143,16 @@ public class ThcController {
         if(updatedRecords > 0)
             return true;
         return false;
+    }
+
+    @RequestMapping(value = "/findLocations",method = RequestMethod.GET)
+    @Operation(summary = "find all locations paginated and sorted")
+    public Page<ThcLocation> findLocationsPaginatedAndSorted(@RequestParam("page") final String page,
+                                                       @RequestParam("size") final String size,
+                                                       @RequestParam(name = "sortBy",required = false, defaultValue = "createDate") final String sortBy,
+                                                       @RequestParam(name = "sortOrder",required = false, defaultValue = "ASC") final String sortOrder,
+                                                       @RequestParam(name = "fields", required = false) final String fields){
+        return thcService.findLocationsPaginatedAndSorted(page, size, sortBy, sortOrder, fields);
     }
 
 }

@@ -3,11 +3,14 @@ package com.example.TexasHamburgComp.service.impl;
 import com.example.TexasHamburgComp.model.*;
 import com.example.TexasHamburgComp.repo.*;
 import com.example.TexasHamburgComp.service.ThcService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Service;
 import org.testng.annotations.Test;
 
@@ -19,8 +22,8 @@ import java.util.Set;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @Service
+@Slf4j
 public class DefaultThcService implements ThcService{
-
     @Autowired
     ThcMenuRepository thcMenuRepository;
     @Autowired
@@ -29,6 +32,9 @@ public class DefaultThcService implements ThcService{
     ThcOpenHoursRepository thcOpenHoursRepository;
     @Autowired
     ThcLocationRepository thcLocationRepository;
+    @Autowired
+    ThcElasticsearchRepository thcElasticsearchRepository;
+
 
     @Override
     public boolean addThcMenu(ThcMenuItem thcMenuItem) {
@@ -141,6 +147,7 @@ public class DefaultThcService implements ThcService{
     @Override
     public boolean addLocation(ThcLocation location){
         thcLocationRepository.save(location);
+        thcElasticsearchRepository.create(location);
         System.out.println(location);
         return true;
     }
@@ -177,5 +184,15 @@ public class DefaultThcService implements ThcService{
         return 1;
 
     }
+
+    public Page<ThcLocation> findLocationsPaginatedAndSorted(String page, String size, String sortBy, String sortOrder, String fields){
+        return thcElasticsearchRepository.findLocationsPaginatedAndSorted(page, size, sortBy, sortOrder, fields);
+    }
+
+    @Override
+    public void batchUpsert(List<ThcLocation> thcLocationList) {
+        thcElasticsearchRepository.batchUpsert(thcLocationList);
+    }
+
 
 }
