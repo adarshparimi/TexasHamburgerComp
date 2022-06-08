@@ -2,8 +2,10 @@ package com.example.TexasHamburgComp.model;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.UniqueConstraint;
 import java.util.UUID;
 
 @Data
@@ -11,6 +13,7 @@ import java.util.UUID;
 public class ThcMenuItem {
     @Id
     private String itemId;
+    @Column(unique = true)
     private String itemName;
     private double price;
     private double comboPrice;

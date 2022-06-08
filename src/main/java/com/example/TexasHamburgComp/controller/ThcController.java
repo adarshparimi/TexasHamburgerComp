@@ -51,6 +51,16 @@ public class ThcController {
         return false;
     }
 
+    @RequestMapping(value = "/findMenuItems",method = RequestMethod.GET)
+    @Operation(summary = "find all menu items paginated and sorted")
+    public Page<ThcMenuItem> findMenuItemPaginatedAndSorted(@RequestParam("page") final String page,
+                                                             @RequestParam("size") final String size,
+                                                             @RequestParam(name = "sortBy",required = false) final String sortBy,
+                                                             @RequestParam(name = "sortOrder",required = false, defaultValue = "ASC") final String sortOrder,
+                                                             @RequestParam(name = "fields", required = false) final String fields){
+        return thcService.findMenuItemPaginatedAndSorted(page, size, sortBy, sortOrder, fields);
+    }
+
     @PostMapping("/addReservations")
     @ApiOperation(value = "This operation add new reservations")
     public boolean addReservations(@RequestBody ThcReservation thcReservation){
@@ -80,6 +90,16 @@ public class ThcController {
         if(updatedRecords > 0)
             return true;
         return false;
+    }
+
+    @RequestMapping(value = "/findReservations",method = RequestMethod.GET)
+    @Operation(summary = "find all reservations paginated and sorted")
+    public Page<ThcReservation> findReservationsPaginatedAndSorted(@RequestParam("page") final String page,
+                                                             @RequestParam("size") final String size,
+                                                             @RequestParam(name = "sortBy",required = false) final String sortBy,
+                                                             @RequestParam(name = "sortOrder",required = false, defaultValue = "ASC") final String sortOrder,
+                                                             @RequestParam(name = "fields", required = false) final String fields){
+        return thcService.findReservationsPaginatedAndSorted(page, size, sortBy, sortOrder, fields);
     }
 
     @PostMapping("/addOpenHours")
@@ -112,6 +132,16 @@ public class ThcController {
         if(updatedRecords > 0)
             return true;
         return false;
+    }
+
+    @RequestMapping(value = "/findOpenHours",method = RequestMethod.GET)
+    @Operation(summary = "find all locations paginated and sorted")
+    public Page<ThcLocation> findOpenHoursPaginatedAndSorted(@RequestParam("page") final String page,
+                                                             @RequestParam("size") final String size,
+                                                             @RequestParam(name = "sortBy",required = false) final String sortBy,
+                                                             @RequestParam(name = "sortOrder",required = false, defaultValue = "ASC") final String sortOrder,
+                                                             @RequestParam(name = "fields", required = false) final String fields){
+        return thcService.findLocationsPaginatedAndSorted(page, size, sortBy, sortOrder, fields);
     }
 
     @PostMapping("/addLocation")
@@ -149,10 +179,16 @@ public class ThcController {
     @Operation(summary = "find all locations paginated and sorted")
     public Page<ThcLocation> findLocationsPaginatedAndSorted(@RequestParam("page") final String page,
                                                        @RequestParam("size") final String size,
-                                                       @RequestParam(name = "sortBy",required = false, defaultValue = "createDate") final String sortBy,
+                                                       @RequestParam(name = "sortBy",required = false) final String sortBy,
                                                        @RequestParam(name = "sortOrder",required = false, defaultValue = "ASC") final String sortOrder,
                                                        @RequestParam(name = "fields", required = false) final String fields){
         return thcService.findLocationsPaginatedAndSorted(page, size, sortBy, sortOrder, fields);
+    }
+
+    @RequestMapping(value = "/findLocationById", method = RequestMethod.GET)
+    @Operation(summary = "find a location by it's ID")
+    public ThcLocation findOneById(@RequestParam("id") final String id){
+        return thcService.findLocationById(id);
     }
 
 }

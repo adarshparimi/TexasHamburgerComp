@@ -39,6 +39,7 @@ public class DefaultThcService implements ThcService{
     @Override
     public boolean addThcMenu(ThcMenuItem thcMenuItem) {
         thcMenuRepository.save(thcMenuItem);
+        thcElasticsearchRepository.createMenuItem(thcMenuItem);
         System.out.println(thcMenuItem);
         return true;
     }
@@ -52,6 +53,8 @@ public class DefaultThcService implements ThcService{
     @Test
     @Transactional
     public int deleteMenuItem(String name){
+        String removedItem = thcElasticsearchRepository.removeMenuItem(name);
+        log.info("Removed item from index {}",removedItem);
         return thcMenuRepository.deleteItemName(name);
     }
 
@@ -67,16 +70,25 @@ public class DefaultThcService implements ThcService{
         System.out.println("to be updated - "+ update_menu_item);
 
         ThcMenuItem updated = thcMenuRepository.save(update_menu_item);
+        log.info("The updated MenuItem: {}",updated);
         if(updated != null)
             return 1;
         return 0;
+    }
+    @Override
+    public Page<ThcMenuItem> findMenuItemPaginatedAndSorted(String page, String size, String sortBy, String sortOrder, String fields){
+        Page<ThcMenuItem> foundMenuItems = thcElasticsearchRepository.findMenuItemPaginatedAndSorted(page, size, sortBy, sortOrder, fields);
+        log.info("The retrieved MenuItems: {}",foundMenuItems);
+        return foundMenuItems;
     }
 
 
     @Override
     public boolean addReservation(ThcReservation thcReservation) {
-        thcReserveRepository.save(thcReservation);
-        System.out.println(thcReservation);
+        thcElasticsearchRepository.createReservation(thcReservation);
+        ThcReservation savedReserve = thcReserveRepository.save(thcReservation);
+        log.info("Saved Reservation: {}",savedReserve);
+//        System.out.println(thcReservation);
         return true;
     }
 
@@ -90,6 +102,7 @@ public class DefaultThcService implements ThcService{
     @Transactional
     public int deleteReservation(int reserve_id){
         int deletedRecords = thcReserveRepository.deleteReservation(reserve_id);
+        log.info("Number of deleted reservations: {}",deletedRecords);
         if(deletedRecords > 0) return 1;
         return 0;
     }
@@ -106,16 +119,23 @@ public class DefaultThcService implements ThcService{
         System.out.println("to be updated - "+ update_reserve);
 
         ThcReservation updated = thcReserveRepository.save(update_reserve);
+        log.info("Updated Reservation: {}",updated);
         if(updated != null)
             return 1;
         return 0;
     }
 
+    @Override
+    public Page<ThcReservation> findReservationsPaginatedAndSorted(String page, String size, String sortBy, String sortOrder, String fields){
+        return thcElasticsearchRepository.findReservationsPaginatedAndSorted(page, size, sortBy, sortOrder, fields);
+    }
+
 
     @Override
-    public boolean addOpenHours(OpenHours OpenHours){
-        thcOpenHoursRepository.save(OpenHours);
-        System.out.println(OpenHours);
+    public boolean addOpenHours(OpenHours openHours){
+        thcOpenHoursRepository.save(openHours);
+        thcElasticsearchRepository.createOpenHours(openHours);
+        System.out.println(openHours);
         return true;
     }
     @Override
@@ -128,26 +148,30 @@ public class DefaultThcService implements ThcService{
     @Transactional
     public int deleteOpenHours(String day){
         int deletedRecords = thcOpenHoursRepository.deleteOpenHours(day);
+        log.info("Number of deleted OpenHours: {}", deletedRecords);
         if(deletedRecords > 0) return 1;
         return 0;
     }
 
-
     @Override
     @Transactional
     public int updateOpenHours(String day, OpenHours openHours){
-        List<OpenHours> openHoursList = thcOpenHoursRepository.selectOpenHours(day);
-        System.out.println("sl = "+ openHoursList);
-
+//        List<OpenHours> openHoursList = thcOpenHoursRepository.selectOpenHours(day);
+//        System.out.println("sl = "+ openHoursList);
+        thcOpenHoursRepository.deleteOpenHours(day);
         thcOpenHoursRepository.save(openHours);
         return 1;
 
     }
 
+    public Page<OpenHours> findOpenHoursPaginatedAndSorted(String page, String size, String sortBy, String sortOrder, String fields){
+        return thcElasticsearchRepository.findOpenHoursPaginatedAndSorted(page, size, sortBy, sortOrder, fields);
+    }
+
     @Override
     public boolean addLocation(ThcLocation location){
         thcLocationRepository.save(location);
-        thcElasticsearchRepository.create(location);
+        thcElasticsearchRepository.createLocation(location);
         System.out.println(location);
         return true;
     }
@@ -185,10 +209,15 @@ public class DefaultThcService implements ThcService{
 
     }
 
+    @Override
     public Page<ThcLocation> findLocationsPaginatedAndSorted(String page, String size, String sortBy, String sortOrder, String fields){
         return thcElasticsearchRepository.findLocationsPaginatedAndSorted(page, size, sortBy, sortOrder, fields);
     }
 
+    @Override
+    public ThcLocation findLocationById(String id){
+        return thcElasticsearchRepository.findLocationById(id);
+    }
     @Override
     public void batchUpsert(List<ThcLocation> thcLocationList) {
         thcElasticsearchRepository.batchUpsert(thcLocationList);
