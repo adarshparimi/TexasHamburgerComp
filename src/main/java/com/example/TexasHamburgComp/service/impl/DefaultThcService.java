@@ -156,8 +156,6 @@ public class DefaultThcService implements ThcService{
     @Override
     @Transactional
     public int updateOpenHours(String day, OpenHours openHours){
-//        List<OpenHours> openHoursList = thcOpenHoursRepository.selectOpenHours(day);
-//        System.out.println("sl = "+ openHoursList);
         thcOpenHoursRepository.deleteOpenHours(day);
         thcOpenHoursRepository.save(openHours);
         return 1;
@@ -202,7 +200,7 @@ public class DefaultThcService implements ThcService{
         System.out.println("update_id"+ update_id);
         update_location.setLocationId(update_id);
         System.out.println("to be updated - "+ update_location);
-
+        thcElasticsearchRepository.updLocation(update_location);
         thcLocationRepository.save(update_location);
         System.out.println("l - "+location);
         return 1;

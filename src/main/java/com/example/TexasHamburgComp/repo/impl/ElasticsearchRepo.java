@@ -20,11 +20,14 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
 
 @Repository
@@ -138,6 +141,21 @@ public class ElasticsearchRepo implements ThcElasticsearchRepository {
     @Override
     public ThcLocation createLocation(ThcLocation thcLocation) {
         return elasticsearchOperations.save(thcLocation, IndexCoordinates.of(LOCATION_INDEX));
+    }
+
+    public ThcLocation updLocation(ThcLocation thcLocation){
+        String locationId = thcLocation.getLocationId();
+        NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(matchQuery("locationId", locationId).minimumShouldMatch("75%"));
+
+        System.out.println("Query-"+searchQuery);
+        SearchHits<ThcLocation> locations = elasticsearchOperations.search(searchQuery.build(),ThcLocation.class, IndexCoordinates.of(LOCATION_INDEX));
+//        System.out.println(locations);
+        ThcLocation location = locations.getSearchHit(0).getContent();
+        System.out.println("search loc - "+location);
+//        location.setLocationName(thcLocation.getLocationName());
+        location = thcLocation;
+        return elasticsearchOperations.save(location,IndexCoordinates.of(LOCATION_INDEX));
     }
 
     @Override

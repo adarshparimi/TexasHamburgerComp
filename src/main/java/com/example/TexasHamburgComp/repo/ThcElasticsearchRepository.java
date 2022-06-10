@@ -24,6 +24,7 @@ public interface ThcElasticsearchRepository {
     Page<OpenHours> findOpenHoursPaginatedAndSorted(String page, String size, String sortField, String sortOrder, String fields);
 
     ThcLocation createLocation(ThcLocation thcLocation);
+    ThcLocation updLocation(ThcLocation thcLocation);
     ThcLocation findLocationById(String locationId);
     Page<ThcLocation> findLocationsPaginatedAndSorted(String page, String size, String sortField, String sortOrder, String fields);
     void batchUpsert(List<ThcLocation> thcLocationList);

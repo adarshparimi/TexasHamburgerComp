@@ -39,6 +39,16 @@ dependencies {
 	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
+	// https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
+	implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.2.0'
+	// https://mvnrepository.com/artifact/org.apache.kafka/connect-json
+	implementation group: 'org.apache.kafka', name: 'connect-json', version: '3.2.0'
+
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
+
+
+
 
 
 
