@@ -1,0 +1,24 @@
+version: '4.3.0'
+services:
+  app:
+    container_name: app-thc-springboot
+    image: app-thc-springboot
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/thcApp
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootroot
+
+  db:
+    platform: linux/x86_64
+    image: mysql
+    container_name: db
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=y39;hd42:?/?RWu&Eb%8m@jNr0fLB41h
+      - MYSQL_DB=thcApp
