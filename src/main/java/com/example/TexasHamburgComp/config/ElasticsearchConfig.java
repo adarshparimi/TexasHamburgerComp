@@ -17,7 +17,7 @@ import java.time.Duration;
 
 @Slf4j
 @EnableElasticsearchRepositories(basePackages = "com.example.TexasHamburgComp.repository")
-@ComponentScan
+@ComponentScan({"com.test","com.bean"})
 @Configuration
 public class ElasticsearchConfig {
     @Value("${elasticsearch:host}:${elasticsearch.port}")

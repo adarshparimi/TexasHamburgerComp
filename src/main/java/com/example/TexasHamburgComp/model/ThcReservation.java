@@ -26,9 +26,4 @@ public class ThcReservation {
     private LocalDate reserveDate;
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime reserveTime;
-
-    public ThcReservation(){
-//        this.reserveId = UUID.randomUUID().toString();
-        this.locationId = UUID.randomUUID().toString();
-    }
 }

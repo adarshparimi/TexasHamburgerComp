@@ -21,20 +21,22 @@ repositories {
 dependencies {
 //	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.testng:testng:7.1.0'
 	implementation 'junit:junit:4.13.1'
 	implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.27'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	runtimeOnly 'org.postgresql:postgresql'
 
-	// https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
-	implementation group: 'org.hibernate.orm', name: 'hibernate-core', version: '6.1.0.Final'
-	// https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
-	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.4.0-b180830.0359'
+//	// https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
+//	implementation group: 'org.hibernate.orm', name: 'hibernate-core', version: '6.1.0.Final'
+//	// https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+//	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.4.0-b180830.0359'
 
 
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-elasticsearch

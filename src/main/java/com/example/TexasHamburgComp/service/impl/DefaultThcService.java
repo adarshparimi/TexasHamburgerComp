@@ -1,25 +1,19 @@
 package com.example.TexasHamburgComp.service.impl;
 
-import com.example.TexasHamburgComp.model.*;
+import com.example.TexasHamburgComp.model.OpenHours;
+import com.example.TexasHamburgComp.model.ThcLocation;
+import com.example.TexasHamburgComp.model.ThcMenuItem;
+import com.example.TexasHamburgComp.model.ThcReservation;
 import com.example.TexasHamburgComp.repo.*;
 import com.example.TexasHamburgComp.service.ThcService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Service;
 import org.testng.annotations.Test;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 
 @Service
 @Slf4j

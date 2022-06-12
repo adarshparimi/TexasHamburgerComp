@@ -1,24 +1,21 @@
 package com.example.TexasHamburgComp.model;
 
 import lombok.Data;
+import org.springframework.context.annotation.Bean;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Data
 @Entity
 public class ThcMenuItem {
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private String itemId;
     @Column(unique = true)
     private String itemName;
     private double price;
     private double comboPrice;
-
-    public ThcMenuItem(){this.itemId = UUID.randomUUID().toString();}
 }
 
 /*

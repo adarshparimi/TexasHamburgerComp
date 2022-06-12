@@ -1,6 +1,10 @@
 package com.example.TexasHamburgComp.controller;
 
-
+import com.example.TexasHamburgComp.service.impl.DefaultThcService;
+import com.example.TexasHamburgComp.model.OpenHours;
+import com.example.TexasHamburgComp.model.ThcLocation;
+import com.example.TexasHamburgComp.model.ThcMenuItem;
+import com.example.TexasHamburgComp.model.ThcReservation;
 import com.example.TexasHamburgComp.model.*;
 import com.example.TexasHamburgComp.service.ThcService;
 import io.swagger.annotations.ApiOperation;
