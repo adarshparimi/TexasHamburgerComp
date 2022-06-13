@@ -58,7 +58,7 @@ public class DefaultThcService implements ThcService{
         List<ThcMenuItem> thcMenuItemList = thcMenuRepository.selectLocation(item_name);
         System.out.println("sl = "+ thcMenuItemList);
 
-        String update_id = thcMenuItemList.get(0).getItemId();
+        int update_id = thcMenuItemList.get(0).getItemId();
         System.out.println("update_id"+ update_id);
         update_menu_item.setItemId(update_id);
         System.out.println("to be updated - "+ update_menu_item);
@@ -190,9 +190,9 @@ public class DefaultThcService implements ThcService{
         List<ThcLocation> location = thcLocationRepository.selectLocation(location_name);
         System.out.println("sl = "+ location);
 
-        String update_id = location.get(0).getLocationId();
+        String update_id = String.valueOf(location.get(0).getLocationId());
         System.out.println("update_id"+ update_id);
-        update_location.setLocationId(update_id);
+        update_location.setLocationId(Integer.parseInt(update_id));
         System.out.println("to be updated - "+ update_location);
         thcElasticsearchRepository.updLocation(update_location);
         thcLocationRepository.save(update_location);

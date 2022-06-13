@@ -21,7 +21,7 @@ public class ThcReservation {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int reserveId;
-    private String locationId;
+    private int locationId;
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate reserveDate;
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "HH:mm:ss")

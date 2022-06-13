@@ -144,7 +144,7 @@ public class ElasticsearchRepo implements ThcElasticsearchRepository {
     }
 
     public ThcLocation updLocation(ThcLocation thcLocation){
-        String locationId = thcLocation.getLocationId();
+        int locationId = thcLocation.getLocationId();
         NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(matchQuery("locationId", locationId).minimumShouldMatch("75%"));
 
@@ -196,7 +196,7 @@ public class ElasticsearchRepo implements ThcElasticsearchRepository {
                     docToUpsert.setIndex(LOCATION_INDEX);
 
                     UpdateQuery.Builder request = UpdateQuery
-                            .builder(entity.getLocationId())
+                            .builder(String.valueOf(entity.getLocationId()))
                             .withDocument(docToUpsert)
                             .withDocAsUpsert(true);
 
