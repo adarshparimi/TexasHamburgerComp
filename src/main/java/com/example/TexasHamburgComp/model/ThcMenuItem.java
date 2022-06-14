@@ -11,7 +11,7 @@ import java.util.UUID;
 public class ThcMenuItem {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int itemId;
+    private long itemId;
     private String itemName;
     private double price;
     private double comboPrice;

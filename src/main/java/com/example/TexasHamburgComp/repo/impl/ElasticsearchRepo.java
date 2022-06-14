@@ -144,7 +144,7 @@ public class ElasticsearchRepo implements ThcElasticsearchRepository {
     }
 
     public ThcLocation updLocation(ThcLocation thcLocation){
-        int locationId = thcLocation.getLocationId();
+        long locationId = thcLocation.getLocationId();
         NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(matchQuery("locationId", locationId).minimumShouldMatch("75%"));
 

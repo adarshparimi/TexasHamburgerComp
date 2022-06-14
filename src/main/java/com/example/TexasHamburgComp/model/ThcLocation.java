@@ -11,7 +11,7 @@ import java.util.UUID;
 public class ThcLocation {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int locationId;
+    private long locationId;
     private String locationName;
 
 }
