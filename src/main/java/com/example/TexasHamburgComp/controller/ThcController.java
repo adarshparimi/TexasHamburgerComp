@@ -15,6 +15,8 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -245,13 +247,14 @@ public class ThcController {
 
     @GetMapping("/getLocation")
     @ApiOperation(value = "This operation will get location details")
-//    @ApiResponses(value ={
-//            @ApiResponse(code = 200,message = "Ok"),
-//            @ApiResponse(code = 201, message = "Added"),
-//            @ApiResponse(code = 500,message = "Internal Server Error")
-//    })
-    public List<ThcLocation> getLocation(){
-        return thcService.getLocation();
+    @ApiResponses(value ={
+            @ApiResponse(code = 200,message = "Ok"),
+            @ApiResponse(code = 201, message = "Added"),
+            @ApiResponse(code = 500,message = "Internal Server Error")
+    })
+    public ResponseEntity<?> getLocation(){
+        List<ThcLocation> location =  thcService.getLocation();
+        return new ResponseEntity<>(location,HttpStatus.OK);
     }
 
     @PostMapping("/deleteLocation")

@@ -5,13 +5,15 @@ import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+@RestControllerAdvice
 @Slf4j
-public class MyExceptionHandler {
+public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 
     @SuppressWarnings("unchecked")
     @ExceptionHandler({Exception.class, RuntimeException.class})
@@ -21,7 +23,7 @@ public class MyExceptionHandler {
         return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
+    @ExceptionHandler({ResourceNotFoundException.class})
     private ResponseEntity<?> handleNotFoundException(ResourceNotFoundException e, HttpServletRequest httpReq, HttpServletResponse httpRes) {
         log.warn(e.getMessage());
         httpRes.setStatus(HttpStatus.NOT_FOUND.value());
