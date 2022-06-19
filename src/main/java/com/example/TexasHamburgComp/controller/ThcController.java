@@ -1,19 +1,19 @@
 package com.example.TexasHamburgComp.controller;
 
 import com.example.TexasHamburgComp.interceptor.ApiExecTimeInterceptor;
-import com.example.TexasHamburgComp.repo.ApiExecTimeRepository;
-import com.example.TexasHamburgComp.service.impl.DefaultThcService;
 import com.example.TexasHamburgComp.model.OpenHours;
 import com.example.TexasHamburgComp.model.ThcLocation;
 import com.example.TexasHamburgComp.model.ThcMenuItem;
 import com.example.TexasHamburgComp.model.ThcReservation;
 import com.example.TexasHamburgComp.model.*;
 import com.example.TexasHamburgComp.service.ThcService;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,24 +25,66 @@ import java.util.List;
 @Slf4j
 public class ThcController {
 
-    private ThcService thcService;
+    @Autowired
+    private final ThcService thcService;
     private ApiExecTimeInterceptor apiExecTimeInterceptor;
 
-    public ThcController(ThcService thcService){
+
+    @Autowired
+    public ThcController(ThcService thcService) {
         this.thcService = thcService;
+    }
+
+    @PostMapping("/addKafka")
+    public boolean kafkaProducer(@RequestBody DailyOrders dailyOrders){
+        thcService.kafkaProducer(dailyOrders);
+        return true;
+    }
+
+    @PostMapping("/Login")
+    @ApiOperation(value = "Register an account")
+    @ApiResponses(value ={
+            @ApiResponse(code = 200,message = "Ok"),
+            @ApiResponse(code = 201, message = "Added"),
+            @ApiResponse(code = 500,message = "Internal Server Error")
+    })
+    public String register(@RequestBody User user){
+        boolean result = thcService.register(user);
+        if(result){
+            return "Registration successful";
+        }
+        else{
+            return "Registration unsuccessful";
+        }
+    }
+
+    @PostMapping("/Login")
+    @ApiOperation(value = "Register an account")
+    @ApiResponses(value ={
+            @ApiResponse(code = 200,message = "Ok"),
+            @ApiResponse(code = 201, message = "Added"),
+            @ApiResponse(code = 500,message = "Internal Server Error")
+    })
+    public String login(@RequestBody User user){
+        boolean result = thcService.login(user);
+        if(result){
+            return "Login successful";
+        }
+        else{
+            return "Login unsuccessful";
+        }
     }
 
     @PostMapping("/addMenuItem")
     @ApiOperation(value = "This operation adds a menu item")
-//    @ApiResponses(value ={
-//            @ApiResponse(code = 200,message = "Ok"),
-//            @ApiResponse(code = 201, message = "Added"),
-//            @ApiResponse(code = 500,message = "Internal Server Error")
-//    })
+    @ApiResponses(value ={
+            @ApiResponse(code = 200,message = "Ok"),
+            @ApiResponse(code = 201, message = "Added"),
+            @ApiResponse(code = 500,message = "Internal Server Error")
+    })
     public boolean addMenuItem(@RequestBody ThcMenuItem thcMenuItem){
 //        System.out.println(thcMenu);
-        boolean result = thcService.addThcMenu(thcMenuItem);
-        return result;
+        return thcService.addThcMenu(thcMenuItem);
     }
 
     @GetMapping("/getMenu")
@@ -235,11 +277,11 @@ public class ThcController {
 
     @PostMapping("/addLocation")
     @ApiOperation(value = "This operation will add a location to database")
-//    @ApiResponses(value ={
-//            @ApiResponse(code = 200,message = "Ok"),
-//            @ApiResponse(code = 201, message = "Added"),
-//            @ApiResponse(code = 500,message = "Internal Server Error")
-//    })
+    @ApiResponses(value ={
+            @ApiResponse(code = 200,message = "Ok"),
+            @ApiResponse(code = 201, message = "Added"),
+            @ApiResponse(code = 500,message = "Internal Server Error")
+    })
     public boolean addLocation(@RequestBody ThcLocation location){
         thcService.addLocation(location);
         return true;
@@ -259,11 +301,11 @@ public class ThcController {
 
     @PostMapping("/deleteLocation")
     @ApiOperation(value = "This operation deletes a location")
-//    @ApiResponses(value ={
-//            @ApiResponse(code = 200,message = "Ok"),
-//            @ApiResponse(code = 201, message = "Added"),
-//            @ApiResponse(code = 500,message = "Internal Server Error")
-//    })
+    @ApiResponses(value ={
+            @ApiResponse(code = 200,message = "Ok"),
+            @ApiResponse(code = 201, message = "Added"),
+            @ApiResponse(code = 500,message = "Internal Server Error")
+    })
     public boolean deleteLocation(@RequestBody String location_name){
         int deletedRecords = thcService.deleteLocation(location_name);
         if(deletedRecords > 0)
@@ -273,11 +315,11 @@ public class ThcController {
 
     @PostMapping("/updateLocation")
     @ApiOperation(value = "This operation updates a location")
-//    @ApiResponses(value ={
-//            @ApiResponse(code = 200,message = "Ok"),
-//            @ApiResponse(code = 201, message = "Added"),
-//            @ApiResponse(code = 500,message = "Internal Server Error")
-//    })
+    @ApiResponses(value ={
+            @ApiResponse(code = 200,message = "Ok"),
+            @ApiResponse(code = 201, message = "Added"),
+            @ApiResponse(code = 500,message = "Internal Server Error")
+    })
     public boolean updateLocations(@RequestBody ThcLocationUpdate thcLocationUpdate){
         String location_name = thcLocationUpdate.getLocation_name();
         ThcLocation update_location = thcLocationUpdate.getLocation();
@@ -289,11 +331,11 @@ public class ThcController {
 
     @RequestMapping(value = "/findLocations",method = RequestMethod.GET)
     @Operation(summary = "find all locations paginated and sorted")
-//    @ApiResponses(value ={
-//            @ApiResponse(code = 200,message = "Ok"),
-//            @ApiResponse(code = 201, message = "Added"),
-//            @ApiResponse(code = 500,message = "Internal Server Error")
-//    })
+    @ApiResponses(value ={
+            @ApiResponse(code = 200,message = "Ok"),
+            @ApiResponse(code = 201, message = "Added"),
+            @ApiResponse(code = 500,message = "Internal Server Error")
+    })
     public Page<ThcLocation> findLocationsPaginatedAndSorted(@RequestParam("page") final String page,
                                                        @RequestParam("size") final String size,
                                                        @RequestParam(name = "sortBy",required = false) final String sortBy,
@@ -304,11 +346,11 @@ public class ThcController {
 
     @RequestMapping(value = "/findLocationById", method = RequestMethod.GET)
     @Operation(summary = "find a location by it's ID")
-//    @ApiResponses(value ={
-//            @ApiResponse(code = 200,message = "Ok"),
-//            @ApiResponse(code = 201, message = "Added"),
-//            @ApiResponse(code = 500,message = "Internal Server Error")
-//    })
+    @ApiResponses(value ={
+            @ApiResponse(code = 200,message = "Ok"),
+            @ApiResponse(code = 201, message = "Added"),
+            @ApiResponse(code = 500,message = "Internal Server Error")
+    })
     public ThcLocation findOneById(@RequestParam("id") final String id){
         return thcService.findLocationById(id);
     }

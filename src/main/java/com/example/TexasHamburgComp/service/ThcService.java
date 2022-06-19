@@ -1,17 +1,13 @@
 package com.example.TexasHamburgComp.service;
 
-import com.example.TexasHamburgComp.model.OpenHours;
-import com.example.TexasHamburgComp.model.ThcLocation;
-import com.example.TexasHamburgComp.model.ThcMenuItem;
-import com.example.TexasHamburgComp.model.ThcReservation;
-import org.aspectj.apache.bcel.classfile.Module;
+import com.example.TexasHamburgComp.model.*;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import javax.xml.stream.Location;
 import java.util.List;
 
-@Service
+@Component
 public interface ThcService {
     boolean addThcMenu(ThcMenuItem thcMenuItem);
     List<ThcMenuItem> getMenu();
@@ -38,6 +34,11 @@ public interface ThcService {
     Page<ThcLocation> findLocationsPaginatedAndSorted(String page, String size, String sortBy, String sortOrder, String fields);
     ThcLocation findLocationById(String id);
     void batchUpsert(List<ThcLocation> thcLocationList);
+
+    boolean kafkaProducer(DailyOrders dailyOrders);
+
+    boolean register(User user);
+    boolean login(User login);
 
 
 }

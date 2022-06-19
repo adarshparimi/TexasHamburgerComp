@@ -2,11 +2,13 @@ package com.example.TexasHamburgComp.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Time;
 import java.time.LocalTime;
+
 
 @Data
 @Entity
