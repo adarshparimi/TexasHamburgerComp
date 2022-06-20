@@ -1,7 +1,6 @@
 package com.example.TexasHamburgComp.service;
 
 import com.example.TexasHamburgComp.model.*;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -37,8 +36,8 @@ public interface ThcService {
 
     boolean kafkaProducer(DailyOrders dailyOrders);
 
-    boolean register(User user);
-    boolean login(User login);
+    boolean register(UserReq user);
+    boolean login(UserReq login);
 
 
 }

@@ -19,5 +19,5 @@ public interface ThcMenuRepository extends CrudRepository<ThcMenuItem, Integer> 
 
     @Modifying
     @Query(value = "select * from thc_menu_item where item_name=:item_name", nativeQuery = true)
-    List<ThcMenuItem> selectLocation(@Param("item_name") String item_name);
+    List<ThcMenuItem> selectMenuItem(@Param("item_name") String item_name);
 }

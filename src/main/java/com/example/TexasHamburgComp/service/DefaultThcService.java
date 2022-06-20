@@ -1,31 +1,24 @@
 package com.example.TexasHamburgComp.service;
 
 
-import com.example.TexasHamburgComp.consumer.KafkaConsumer;
 import com.example.TexasHamburgComp.exceptions.ResourceNotFoundException;
 import com.example.TexasHamburgComp.model.*;
 import com.example.TexasHamburgComp.producer.JsonKafkaProducer;
 import com.example.TexasHamburgComp.repo.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.testng.annotations.Test;
-import springfox.documentation.spring.web.json.Json;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
-
-import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 @Service
 @Slf4j
@@ -60,7 +53,7 @@ public class DefaultThcService implements ThcService{
     }
 
     @Override
-    public boolean register(User user){
+    public boolean register(UserReq user){
         try {
             securityRepository.save(user);
         }catch(Exception e){
@@ -70,8 +63,8 @@ public class DefaultThcService implements ThcService{
     }
 
     @Override
-    public boolean login(User login){
-        List<User> users = securityRepository.selectUser(login.getUsername());
+    public boolean login(UserReq login){
+        List<UserReq> users = securityRepository.selectUser(login.getUsername());
         if(users.isEmpty()){
             throw new ResourceNotFoundException("No Menu items available");
         }
@@ -88,7 +81,7 @@ public class DefaultThcService implements ThcService{
     @Override
     public boolean addThcMenu(ThcMenuItem thcMenuItem) {
         try{
-//            thcMenuRepository.save(thcMenuItem);
+            thcMenuRepository.save(thcMenuItem);
         }catch(Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Menu Item details invalid");
         }
@@ -113,21 +106,21 @@ public class DefaultThcService implements ThcService{
     @Test
     @Transactional
     public int deleteMenuItem(String name) {
-        String removedItem = thcElasticsearchRepository.removeMenuItem(name);
-        log.info("Removed item from index {}", removedItem);
         int deletedRecords = 0;
         try {
             deletedRecords = thcMenuRepository.deleteItemName(name);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "MenuItem details invalid");
         }
+        String removedItem = thcElasticsearchRepository.removeMenuItem(name);
+        log.info("Removed item from index {}", removedItem);
         return deletedRecords;
     }
 
     @Override
     @Transactional
     public int updateMenuItem(String item_name,ThcMenuItem update_menu_item){
-        List<ThcMenuItem> thcMenuItemList = thcMenuRepository.selectLocation(item_name);
+        List<ThcMenuItem> thcMenuItemList = thcMenuRepository.selectMenuItem(item_name);
         if(thcMenuItemList.isEmpty()){
             throw new ResourceNotFoundException("No Menu items available");
         }
@@ -380,11 +373,11 @@ public class DefaultThcService implements ThcService{
     @Override
     public Page<ThcLocation> findLocationsPaginatedAndSorted(String page, String size, String sortBy, String sortOrder, String fields){
         Page<ThcLocation> result;
-        try{
+//        try{
             result = thcElasticsearchRepository.findLocationsPaginatedAndSorted(page, size, sortBy, sortOrder, fields);
-        }catch(Exception e){
-            throw new ResourceNotFoundException("No OpenHour details available");
-        }
+//        }catch(Exception e){
+//            throw new ResourceNotFoundException("No Location details available");
+//        }
         log.info("found locations paginated and sorted: {}",result);
         return result;
     }

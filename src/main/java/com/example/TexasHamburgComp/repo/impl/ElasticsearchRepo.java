@@ -8,6 +8,7 @@ import com.example.TexasHamburgComp.repo.ThcElasticsearchRepository;
 import com.example.TexasHamburgComp.repo.ThcLocationRepository;
 import com.example.TexasHamburgComp.repo.ThcMenuRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -20,7 +21,6 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.stereotype.Repository;
 
@@ -166,7 +166,7 @@ public class ElasticsearchRepo implements ThcElasticsearchRepository {
     @Override
     public Page<ThcLocation> findLocationsPaginatedAndSorted(String page, String size, String sortField, String sortOrder, String fields) {
         PageRequest pageRequest = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size));
-        SortBuilder sortRequest = SortBuilders.fieldSort(sortField);
+        SortBuilder<FieldSortBuilder> sortRequest = SortBuilders.fieldSort(sortField);
         if(sortOrder.equalsIgnoreCase("asc")) {
             sortRequest.order(SortOrder.ASC);
         }else {

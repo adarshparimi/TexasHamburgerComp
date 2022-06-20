@@ -7,13 +7,11 @@ import com.example.TexasHamburgComp.model.ThcMenuItem;
 import com.example.TexasHamburgComp.model.ThcReservation;
 import com.example.TexasHamburgComp.model.*;
 import com.example.TexasHamburgComp.service.ThcService;
-import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +23,11 @@ import java.util.List;
 @Slf4j
 public class ThcController {
 
-    @Autowired
+
     private final ThcService thcService;
     private ApiExecTimeInterceptor apiExecTimeInterceptor;
 
 
-    @Autowired
     public ThcController(ThcService thcService) {
         this.thcService = thcService;
     }
@@ -41,14 +38,14 @@ public class ThcController {
         return true;
     }
 
-    @PostMapping("/Login")
+    @PostMapping("/Register")
     @ApiOperation(value = "Register an account")
     @ApiResponses(value ={
             @ApiResponse(code = 200,message = "Ok"),
             @ApiResponse(code = 201, message = "Added"),
             @ApiResponse(code = 500,message = "Internal Server Error")
     })
-    public String register(@RequestBody User user){
+    public String register(@RequestBody UserReq user){
         boolean result = thcService.register(user);
         if(result){
             return "Registration successful";
@@ -65,7 +62,7 @@ public class ThcController {
             @ApiResponse(code = 201, message = "Added"),
             @ApiResponse(code = 500,message = "Internal Server Error")
     })
-    public String login(@RequestBody User user){
+    public String login(@RequestBody UserReq user){
         boolean result = thcService.login(user);
         if(result){
             return "Login successful";
@@ -107,9 +104,7 @@ public class ThcController {
     })
     public boolean deleteMenuItem(@RequestBody String name){
         int deletedRecords = thcService.deleteMenuItem(name);
-        if(deletedRecords == 1)
-            return true;
-        return false;
+        return deletedRecords == 1;
     }
 
     @PostMapping("/updateMenuItem")

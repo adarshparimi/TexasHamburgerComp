@@ -16,17 +16,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ThcMenuItem {
     @Id
-    @Column(name="item_id")
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long itemId;
 
-    @Column(name="item_name")
     private String itemName;
 
-    @Column(name="price")
     private double price;
 
-    @Column(name = "combo_price")
     private double comboPrice;
     
     public ThcMenuItem(String itemName,double price,double comboPrice){
