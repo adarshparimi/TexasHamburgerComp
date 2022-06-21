@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface SecurityRepository extends CrudRepository<UserReq, String> {
     @Modifying
-    @Query(value = "select * from user where username=:username", nativeQuery = true)
+    @Query(value = "select * from user_req where username=:username", nativeQuery = true)
     List<UserReq> selectUser(@Param("username") String username);
 }

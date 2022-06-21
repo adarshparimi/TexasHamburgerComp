@@ -65,16 +65,12 @@ public class DefaultThcService implements ThcService{
     @Override
     public boolean login(UserReq login){
         List<UserReq> users = securityRepository.selectUser(login.getUsername());
+
         if(users.isEmpty()){
-            throw new ResourceNotFoundException("No Menu items available");
+            throw new ResourceNotFoundException("Username or password wrong");
         }
         else{
-            if(Objects.equals(users.get(0).getPassword(), login.getPassword())){
-                return true;
-            }
-            else {
-                return false;
-            }
+            return Objects.equals(users.get(0).getPassword(), login.getPassword());
         }
     }
 
