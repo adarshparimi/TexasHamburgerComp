@@ -54,7 +54,7 @@ public class DefaultThcService implements ThcService{
 
     @Override
     public boolean register(UserReq user){
-        try {
+        try{
             securityRepository.save(user);
         }catch(Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User details invalid");
