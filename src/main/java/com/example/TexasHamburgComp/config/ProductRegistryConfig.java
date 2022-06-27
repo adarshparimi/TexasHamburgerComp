@@ -17,4 +17,3 @@ public class ProductRegistryConfig implements WebMvcConfigurer {
         registry.addInterceptor(apiExecTimeInterceptor);
     }
 }
-eptor
